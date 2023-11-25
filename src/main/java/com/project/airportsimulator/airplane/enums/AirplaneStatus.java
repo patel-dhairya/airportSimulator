@@ -8,7 +8,7 @@ package com.project.airportsimulator.airplane.enums;
  */
 public enum AirplaneStatus {
     DUE("Due for arrival or departure"),
-    WAITING("Waiting on the ground"),
+    WAITING("Arrived in airspace and waiting to land"),
     LANDED("Successfully landed"),
     DEPARTING("Preparing for departure");
 

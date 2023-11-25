@@ -14,23 +14,12 @@ import com.project.airportsimulator.airport.Runway;
  */
 public class Airplane {
     // Attributes
-    private String flightNumber;    // The flight number
+    private final String flightNumber;    // The flight number
     public String originCity;           // Origin city of airplane
     private String destinationCity;        // Destination city of airplane
     private AirplaneStatus currentStatus;      // Current status of airplane
     private Runway currentAllocatedRunway; // to implement Runway association
 
-
-    /**
-     * Validates that the origin city and destination city are not the same.
-     *
-     * @throws AirplaneException If origin and destination cities are the same.
-     */
-    private void validateCities() {
-        if (originCity.equals(destinationCity)) {
-            throw new AirplaneException("Origin city and destination city of the plane cannot be the same.");
-        }
-    }
 
     // methods
     /**
@@ -38,16 +27,14 @@ public class Airplane {
      *
      * @param flightNumber The flight number of the plane to register
      * @param cityOfOrigin The city of origin of the plane to register
-     * @param destinationCity The destination city of the plane
      */
-    public Airplane(String flightNumber, String cityOfOrigin, String destinationCity)
+    public Airplane(String flightNumber, String cityOfOrigin)
     {
         this.flightNumber = flightNumber;
         this.originCity = cityOfOrigin;
-        this.destinationCity = destinationCity;
         this.currentStatus = AirplaneStatus.DUE;
         this.currentAllocatedRunway = null; // indicates no runway is allocated during construct of new plane
-        validateCities(); // Call the validation method
+        this.destinationCity = null; // will be assigned once airplane reach the airport, shows the new destination of flight
     }
 
     // Getter Methods
@@ -73,7 +60,7 @@ public class Airplane {
     /**
      * Gets the destination city associated with the flight.
      *
-     * @return destination of flight.
+     * @return The city of destination.
      */
     public String getDestinationCity() {
         return this.destinationCity;
@@ -82,9 +69,18 @@ public class Airplane {
     /**
      * Gets the current status of the airplane.
      *
+     * @return The current status.
+     */
+    public AirplaneStatus getStatus() {
+        return this.currentStatus;
+    }
+
+    /**
+     * Gets the current status alongside description of the airplane
+     *
      * @return The current status description.
      */
-    public String getStatus() {
+    public String getStatusDesc(){
         return this.currentStatus.getDescription();
     }
 
@@ -121,13 +117,21 @@ public class Airplane {
     }
 
     /**
+     *
+     * @param destinationCity
+     */
+    public void setDestinationCity(String destinationCity){
+        this.destinationCity = destinationCity;
+    }
+
+    /**
      * Allocates the given runway to the airplane.
      *
      * @param runway The runway to be allocated.
      * @throws AirplaneException If the runway parameter is null or if the runway is already allocated.
      */
     public void allocateRunway(Runway runway) throws AirplaneException {
-        if (!isAllocatedARunway()) {
+        if (runway == null) {
             throw new AirplaneException("No runway to allocate");
         }
         if (runway.isAllocated()) {
@@ -143,11 +147,10 @@ public class Airplane {
      * @throws AirplaneException If no runway is allocated.
      */
     public void vacateRunway() {
-        if (!isAllocatedARunway()) {
+        if (this.currentAllocatedRunway == null) {
             throw new AirplaneException("No runway allocated");
         }
         currentAllocatedRunway.vacate();
-        currentAllocatedRunway = null; // Release the reference
     }
 
     /**
@@ -162,16 +165,6 @@ public class Airplane {
         }
     }
 
-    /**
-     * Changes the destination city of the airplane.
-     *
-     * @param destination The new destination city.
-     */
-    public void changeCity(String destination) {
-        this.originCity = this.destinationCity;
-        this.destinationCity = destination;
-    }
-
     // Overrides
 
     /**
@@ -181,7 +174,7 @@ public class Airplane {
      */
     @Override
     public String toString() {
-        StringBuilder output = new StringBuilder("Number: " + flightNumber + "\tOrigin City: " + originCity + "\tFlight Status: " + currentStatus + "\tDestination City: " + destinationCity);
+        StringBuilder output = new StringBuilder("Number: " + flightNumber + "\tOrigin City: " + originCity + "\tFlight Status: " + currentStatus);
         if (currentAllocatedRunway != null) {
             output.append("\tRunway: ").append(currentAllocatedRunway);
         }

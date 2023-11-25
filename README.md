@@ -7,6 +7,17 @@ It is Java-based simulation project which uses important java functionalities an
 
 <br>
 
+<b> Current Working Flow </b>:<br>
+An air traffic controller records an incoming flight entering airport airspace,
+and requesting to land at the airport, by submitting its flight number. As long as the
+plane has previously registered with the airport, the air traffic controller is given an
+unoccupied runway number on which the plane will have permission to land. If all
+runways are occupied however, this permission is denied and the air traffic controller
+is informed to instruct the plane to circle the airport. If the plane has not
+previously registered with the airport an error is signalled.
+
+<br><br>
+
 <b> Key Features: </b>
 
 * Java-based simulation leveraging essential Java functionalities.

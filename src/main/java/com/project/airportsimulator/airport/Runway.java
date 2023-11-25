@@ -15,8 +15,8 @@ import java.io.Serializable;
 public class Runway implements Serializable {
 
     // Attributes
-    private int runwayNumber;
-    private boolean isAllocated;
+    private int runwayNumber;       // Runway number
+    private boolean isAllocated;    // Check if runway is allocated for plane
 
     /**
      * Constructs a Runway with the given runway number.
